@@ -33,7 +33,6 @@ public class XpChestScreen extends AbstractContainerScreen<XpChestMenu> {
 	public static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/xpchest_gui.png");
 
 	private Player player;
-	private ForgeSlider slider;
 	private Button withdrawButton;
 	private Button depositButton;
 	private EditBox box;
@@ -50,15 +49,12 @@ public class XpChestScreen extends AbstractContainerScreen<XpChestMenu> {
 		int x = (width - imageWidth) / 2;
 		int y = (height - imageHeight) / 2;
 		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		/*this.slider = addRenderableWidget(new ForgeSlider(x+18,y+23,153,20,new TextComponent("Exp: "),TextComponent.EMPTY,
-				0,100,100,1,1,false));*/
 		this.box = new EditBox(font, x + 53, y + 15, 76, 15, TextComponent.EMPTY);
 		this.box.setCanLoseFocus(false);
 		this.box.setTextColor(-1);
 		this.box.setTextColorUneditable(-1);
 		this.box.setBordered(true);
 		this.box.setMaxLength(50);
-		//this.box.setSuggestion("Introduce a 4 characters password");
 		this.box.setValue("");
 		this.addWidget(this.box);
 		this.setInitialFocus(this.box);
@@ -84,15 +80,8 @@ public class XpChestScreen extends AbstractContainerScreen<XpChestMenu> {
 					ModMessages.sendToServer(new PacketXPSync2S(depositedXp, menu.blockEntity.getBlockPos()));
 					menu.blockEntity.setXpStored(depositedXp);
 					int previousLevel = player.experienceLevel;
-					//MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.XpChange(player, -depositedXp));
 
 					ModMessages.sendToServer(new PacketGivePlayerXpSync2S(-depositedXp)); //Removes the xp from the player
-					//TotisPlayerUtils.addPlayerXP(player, -depositedXp);
-
-
-					//if(previousLevel != player.experienceLevel) MinecraftForge.EVENT_BUS.post(new PlayerXpEvent.LevelChange(player, player.experienceLevel));
-
-					//player.giveExperienceLevels(-depositedXp);
 				} else {
 					player.sendMessage(new TextComponent(ChatFormatting.RED + "Error: no XP to deposit"), player.getUUID());
 				}
